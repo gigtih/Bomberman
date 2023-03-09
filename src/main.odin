@@ -12,7 +12,7 @@ WINDOW_FLAGS  :: sdl2.WindowFlags{.SHOWN}
 
 CTX :: struct {
     window:      ^sdl2.Window,
-	renderer:    ^sdl2.Renderer,
+    renderer:    ^sdl2.Renderer,
 
     dt:          f64,
     quit:        bool,
