@@ -1,11 +1,15 @@
 # Bomberman
 
-This is not a official / original game. Project made for fun and practice.
+**This is not a official / original game. Project made for fun and practice.**
 
 Written in odin with sdl2.
 
 ## Building
 
-For Windows run the `build.bat` file. Must have the odin compiler.
+**You need the odin compiler to build the source**.
 
-For Linux run the `build.sh` file (must have the odin compiler).
+Create a `bin` folder, paste the sdl2 dlls, `SDL2_image.dll, SDL2.dll, libpng16-16.dll. zlib1.dll`
+
+For Windows run the `build.bat` file.
+
+For Linux run the `build.sh` file.
