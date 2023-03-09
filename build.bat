@@ -5,7 +5,7 @@ call cls
 echo ===========BUILDING===========
 echo.
 
-call odin build src\ -out:bin\Bombermen.exe -o:speed
+call odin build src\ -out:bin\Bomberman.exe -o:speed
 
 if %ERRORLEVEL% EQU 0 (
     echo.
@@ -13,7 +13,7 @@ if %ERRORLEVEL% EQU 0 (
     echo ===========RUNNING===========
     echo.
 
-    call .\bin\Bombermen.exe
+    call .\bin\Bomberman.exe
 
     echo.
 ) else (

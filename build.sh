@@ -5,7 +5,7 @@ clear
 echo ===========BUILDING===========
 echo
 
-odin build src/ -out:bin/Bombermen.exe -o:speed
+odin build src/ -out:bin/Bomberman.exe -o:speed
 
 if [ $? -eq 0 ]; then
     echo
@@ -13,7 +13,7 @@ if [ $? -eq 0 ]; then
     echo ===========RUNNING===========
     echo
 
-    ./bin/Bombermen.exe
+    ./bin/Bomberman.exe
 
     echo
 else 
