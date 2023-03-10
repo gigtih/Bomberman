@@ -5,7 +5,7 @@ import "core:fmt"
 
 @(private="file")
 Player :: struct {
-    vel:        [2]f32,
+    vel:        [2]i32,
     pos:        [2]i32,
 
     tile_pos:   [2]i32,
@@ -69,13 +69,13 @@ player := Player{
 }
 
 start_moving :: proc(player: ^Player) {
-    // if player.moving do return
+    if !player.moving do return
 
-    if player.tile_pos.y > player.target_pos.y do player.vel.y = -200
-    if player.tile_pos.y < player.target_pos.y do player.vel.y = 200
+    if player.tile_pos.y > player.target_pos.y do player.vel.y = -2
+    if player.tile_pos.y < player.target_pos.y do player.vel.y = 2
 
-    if player.tile_pos.x > player.target_pos.x do player.vel.x = -200
-    if player.tile_pos.x < player.target_pos.x do player.vel.x = 200
+    if player.tile_pos.x > player.target_pos.x do player.vel.x = -2
+    if player.tile_pos.x < player.target_pos.x do player.vel.x = 2
 }
 
 draw_player :: proc() {
@@ -83,16 +83,11 @@ draw_player :: proc() {
 }
 
 convert_from_tile :: proc(tile_pos: [2]i32) -> [2]i32 {
-    return GRID_X_SIZE + TILE_SIZE * tile_pos
+    return TILE_SIZE * tile_pos
 }
 
 update_player :: proc() {
     if !player.moving do return
-
-    dt := cast(f32)ctx.dt
-
-    player.pos.x += i32(player.vel.x * dt)
-    player.pos.y += i32(player.vel.y * dt)
 
     if player.pos == convert_from_tile(player.target_pos) {
         player.tile_pos.x = player.target_pos.x
@@ -102,4 +97,7 @@ update_player :: proc() {
 
         player.moving = false
     }
+
+    player.pos.x += player.vel.x
+    player.pos.y += player.vel.y
 }
