@@ -53,12 +53,12 @@ player := Player{
     },
     move_left  = proc(player: ^Player) {
         if player.moving do return
-        player.target_pos.x = player.tile_pos.x + 1
+        player.target_pos.x = player.tile_pos.x - 1
         player.moving = true
     },
     move_right = proc(player: ^Player) {
         if player.moving do return
-        player.target_pos.x = player.tile_pos.x - 1
+        player.target_pos.x = player.tile_pos.x + 1
         player.moving = true
     },
     move_down  = proc(player: ^Player) {
@@ -69,13 +69,13 @@ player := Player{
 }
 
 start_moving :: proc(player: ^Player) {
-    if player.moving do return
+    // if player.moving do return
 
     if player.tile_pos.y > player.target_pos.y do player.vel.y = -200
     if player.tile_pos.y < player.target_pos.y do player.vel.y = 200
 
-    if player.tile_pos.x > player.target_pos.x do player.vel.x = 200
-    if player.tile_pos.x < player.target_pos.x do player.vel.x = -200
+    if player.tile_pos.x > player.target_pos.x do player.vel.x = -200
+    if player.tile_pos.x < player.target_pos.x do player.vel.x = 200
 }
 
 draw_player :: proc() {
