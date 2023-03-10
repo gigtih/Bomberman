@@ -2,6 +2,7 @@ package main
 
 import "vendor:sdl2"
 import "core:log"
+import "core:fmt"
 
 WINDOW_TITLE  :: "Bomberman"
 WINDOW_WIDTH  := i32(GRID_X_SIZE * TILE_SIZE + GRID_X_SIZE)
@@ -74,33 +75,26 @@ process_input :: proc() {
             case .KEYDOWN:
                 #partial switch event.key.keysym.sym {
                     case .W:
-                        player.vel.y = -400
+                        player->move_up()
                     case .A:
-                        player.vel.x = -400
+                        player->move_left()
                     case .S:
-                        player.vel.y = 400
+                        player->move_down()
                     case .D:
-                        player.vel.x = 400
-                }
-
-            case .KEYUP:
-                #partial switch event.key.keysym.sym {
-                    case .A, .D:
-                        player.vel.x = 0
-                    case .W, .S:
-                        player.vel.y = 0
+                        player->move_right()
                 }
         }
     }
 }
 
 update :: proc() {
+    start_moving(&player)
     update_player()
 }
 
 main :: proc() {
     context.logger = log.create_console_logger()
-    
+
     ctx.quit = !init_sdl()
     
     now: u64  = sdl2.GetPerformanceCounter()
@@ -114,6 +108,8 @@ main :: proc() {
     defer for _, texture in ctx.textures do sdl2.DestroyTexture(texture)
 
     generate_map()
+
+    player->construct()
 
     for !ctx.quit {
         last = now
