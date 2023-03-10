@@ -99,6 +99,7 @@ update_player :: proc() {
         player.tile_pos.y = player.target_pos.y
 
         player.vel.xy = 0
+
         player.moving = false
     }
 }
