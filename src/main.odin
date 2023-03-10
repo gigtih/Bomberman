@@ -15,7 +15,6 @@ CTX :: struct {
     window:      ^sdl2.Window,
     renderer:    ^sdl2.Renderer,
 
-    dt:          f64,
     quit:        bool,
 
     textures:    map[string]^sdl2.Texture,
@@ -50,7 +49,7 @@ init_sdl :: proc() -> (ok: bool) {
     
     // TODO: add bomb textures (animations)
 
-    // temp bomb texture
+    // temporary bomb texture
     ctx.textures["bomb"] = load_texture("assets/textures/Bomb.png")
 
     return true
@@ -96,9 +95,6 @@ main :: proc() {
     context.logger = log.create_console_logger()
 
     ctx.quit = !init_sdl()
-    
-    now: u64  = sdl2.GetPerformanceCounter()
-    last: u64 = 0
 
     defer sdl2.Quit()
     defer sdl2.DestroyWindow(ctx.window)
@@ -112,13 +108,6 @@ main :: proc() {
     player->construct()
 
     for !ctx.quit {
-        last = now
-        now = sdl2.GetPerformanceCounter()
-
-        ctx.dt = f64((now - last)) / f64(sdl2.GetPerformanceFrequency())
-
-        if ctx.dt > 1 do ctx.dt = 0
-
         process_input()
         update()
         draw()
