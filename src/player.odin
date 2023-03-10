@@ -98,8 +98,6 @@ update_player :: proc() {
         player.tile_pos.x = player.target_pos.x
         player.tile_pos.y = player.target_pos.y
 
-        fmt.println("funnie")
-        
         player.vel.xy = 0
         player.moving = false
     }
