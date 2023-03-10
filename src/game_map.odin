@@ -38,10 +38,10 @@ generate_map :: proc() {
 
 update_map :: proc() {
     for row, row_index in game_map {
-        y := GRID_Y_SIZE + TILE_SIZE * i32(row_index)
+        y := TILE_SIZE * i32(row_index)
 
         for col, col_index in row {
-            x := GRID_X_SIZE + TILE_SIZE * i32(col_index)
+            x := TILE_SIZE * i32(col_index)
 
             #partial switch col {
                 case .WALL:
