@@ -26,8 +26,8 @@ player := Player{
         0,
     },
     pos = {
-        GRID_X_SIZE + TILE_SIZE * 7,
-        GRID_Y_SIZE + TILE_SIZE * 7,
+        TILE_SIZE * 7,
+        TILE_SIZE * 7,
     },
     tile_pos = {
         0,
