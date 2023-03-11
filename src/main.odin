@@ -67,27 +67,16 @@ draw :: proc() {
 process_input :: proc() {
     event: sdl2.Event
 
-    for sdl2.PollEvent(&event) {
-        #partial switch event.type {
-            case .QUIT:
-                ctx.quit = true
-            case .KEYDOWN:
-                #partial switch event.key.keysym.sym {
-                    case .W:
-                        player->move_up()
-                    case .A:
-                        player->move_left()
-                    case .S:
-                        player->move_down()
-                    case .D:
-                        player->move_right()
-                }
-        }
-    }
+    if !sdl2.PollEvent(&event) do return
+
+    if event.type == .QUIT do ctx.quit = true
+
+    process_keys(&event)
+    process_player_input()
 }
 
 update :: proc() {
-    start_moving(&player)
+    player->start_moving()
     update_player()
 }
 
@@ -100,7 +89,7 @@ main :: proc() {
     defer sdl2.DestroyWindow(ctx.window)
     defer sdl2.DestroyRenderer(ctx.renderer)
     defer delete(ctx.textures)
-    
+
     defer for _, texture in ctx.textures do sdl2.DestroyTexture(texture)
 
     generate_map()

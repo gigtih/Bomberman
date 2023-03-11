@@ -5,19 +5,20 @@ import "core:fmt"
 
 @(private="file")
 Player :: struct {
-    vel:        [2]i32,
-    pos:        [2]i32,
+    vel:          [2]i32,
+    pos:          [2]i32,
 
-    tile_pos:   [2]i32,
-    target_pos: [2]i32,
+    tile_pos:     [2]i32,
+    target_pos:   [2]i32,
 
-    moving:     bool,
+    moving:       bool,
 
-    construct:  proc(player: ^Player),
-    move_up:    proc(player: ^Player),
-    move_left:  proc(player: ^Player),
-    move_right: proc(player: ^Player),
-    move_down:  proc(player: ^Player),
+    construct:    proc(player: ^Player),
+    move_up:      proc(player: ^Player),
+    move_left:    proc(player: ^Player),
+    move_right:   proc(player: ^Player),
+    move_down:    proc(player: ^Player),
+    start_moving: proc(player: ^Player),
 }
 
 player := Player{
@@ -40,18 +41,18 @@ player := Player{
 
     moving = false,
 
-    construct  = proc(player: ^Player) {
+    construct = proc(player: ^Player) {
         player.tile_pos.x = player.pos.x / TILE_SIZE
         player.tile_pos.y = player.pos.y / TILE_SIZE
 
         player.target_pos = player.tile_pos
     },
-    move_up    = proc(player: ^Player) {
+    move_up = proc(player: ^Player) {
         if player.moving do return
         player.target_pos.y = player.tile_pos.y - 1
         player.moving = true
     },
-    move_left  = proc(player: ^Player) {
+    move_left = proc(player: ^Player) {
         if player.moving do return
         player.target_pos.x = player.tile_pos.x - 1
         player.moving = true
@@ -61,21 +62,20 @@ player := Player{
         player.target_pos.x = player.tile_pos.x + 1
         player.moving = true
     },
-    move_down  = proc(player: ^Player) {
+    move_down = proc(player: ^Player) {
         if player.moving do return
         player.target_pos.y = player.tile_pos.y + 1
         player.moving = true
     },
-}
+    start_moving = proc(player: ^Player) {
+        if !player.moving do return
 
-start_moving :: proc(player: ^Player) {
-    if !player.moving do return
+        if player.tile_pos.y > player.target_pos.y do player.vel.y = -2
+        if player.tile_pos.y < player.target_pos.y do player.vel.y = 2
 
-    if player.tile_pos.y > player.target_pos.y do player.vel.y = -2
-    if player.tile_pos.y < player.target_pos.y do player.vel.y = 2
-
-    if player.tile_pos.x > player.target_pos.x do player.vel.x = -2
-    if player.tile_pos.x < player.target_pos.x do player.vel.x = 2
+        if player.tile_pos.x > player.target_pos.x do player.vel.x = -2
+        if player.tile_pos.x < player.target_pos.x do player.vel.x = 2
+    },
 }
 
 draw_player :: proc() {
@@ -86,9 +86,20 @@ convert_from_tile :: proc(tile_pos: [2]i32) -> [2]i32 {
     return TILE_SIZE * tile_pos
 }
 
-update_player :: proc() {
-    if !player.moving do return
+process_player_input :: proc() {
+    #partial switch current_input_state {
+        case .DOWN:
+            player->move_down()
+        case .LEFT:
+            player->move_left()
+        case .RIGHT:
+            player->move_right()
+        case .UP:
+            player->move_up()
+    }
+}
 
+update_player :: proc() {
     if player.pos == convert_from_tile(player.target_pos) {
         player.tile_pos.x = player.target_pos.x
         player.tile_pos.y = player.target_pos.y
