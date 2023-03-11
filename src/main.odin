@@ -76,7 +76,12 @@ process_input :: proc() {
 }
 
 update :: proc() {
-    player->start_moving()
+    if can_player_move(&player) {
+        player->start_moving()
+    } else {
+        cancel_moving(&player)
+    }
+
     update_player()
 }
 

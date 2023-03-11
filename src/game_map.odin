@@ -4,14 +4,13 @@ import "vendor:sdl2"
 import "core:fmt"
 
 /*
-    TileType < 0, Cannot be destroyed and can collide.
-    TileType > 0, Can be destroyed and can collide.
+    TileType > 0, Can collide.
     TileType == 0, Ground.
 */
 TileType :: enum i8 {
-    WALL   = -1,
     GROUND = 0,
-    BRICK  = 1,
+    WALL   = 1,
+    BRICK  = 2,
 }
 
 TILE_SIZE   :: i32(40)
@@ -34,6 +33,10 @@ generate_map :: proc() {
             if row_index % 2 == 0 && col_index % 2 == 0 do game_map[row_index][col_index] = .WALL
         }
     }
+}
+
+is_out_of_bounds :: proc(tile_pos: [2]i32) -> bool {
+    return ((tile_pos.x < 0 ) || (tile_pos.x >= GRID_X_SIZE) || (tile_pos.y < 0) || (tile_pos.y >= GRID_Y_SIZE))
 }
 
 update_map :: proc() {

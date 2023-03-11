@@ -99,14 +99,28 @@ process_player_input :: proc() {
     }
 }
 
+can_player_move :: proc(player: ^Player) -> bool {
+    if is_out_of_bounds(player.target_pos) do return false
+    return !(i32(game_map[player.target_pos.x][player.target_pos.y]) > 0)
+}
+
+stop_moving :: proc(player: ^Player) {
+    player.tile_pos.x = player.target_pos.x
+    player.tile_pos.y = player.target_pos.y
+
+    player.vel.xy = 0
+
+    player.moving = false
+}
+
+cancel_moving :: proc(player: ^Player) {
+    player.target_pos.x = player.tile_pos.x
+    player.target_pos.y = player.tile_pos.y
+}
+
 update_player :: proc() {
     if player.pos == convert_from_tile(player.target_pos) {
-        player.tile_pos.x = player.target_pos.x
-        player.tile_pos.y = player.target_pos.y
-
-        player.vel.xy = 0
-
-        player.moving = false
+        stop_moving(&player)
     }
 
     player.pos.x += player.vel.x
