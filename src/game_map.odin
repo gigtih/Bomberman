@@ -39,7 +39,7 @@ is_out_of_bounds :: proc(tile_pos: [2]i32) -> bool {
     return ((tile_pos.x < 0 ) || (tile_pos.x >= GRID_X_SIZE) || (tile_pos.y < 0) || (tile_pos.y >= GRID_Y_SIZE))
 }
 
-update_map :: proc() {
+render_map :: proc() {
     for row, row_index in game_map {
         y := TILE_SIZE * i32(row_index)
 

@@ -57,7 +57,7 @@ init_sdl :: proc() -> (ok: bool) {
 draw :: proc() {
     sdl2.RenderClear(ctx.renderer)
 
-    update_map()
+    render_map()
     draw_player()
 
     sdl2.RenderPresent(ctx.renderer)
