@@ -2,38 +2,43 @@ package main
 
 import "vendor:sdl2"
 
-input_state :: enum i8 {
+InputState :: enum i8 {
     NONE,
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
+    W,
+    S,
+    A,
+    D,
+    SPACE,
 }
 
-current_input_state: input_state
+current_input_state: InputState
 
 process_keys :: proc(event: ^sdl2.Event) {
     if event.type == .KEYDOWN {
         #partial switch event.key.keysym.scancode {
             case .D:
-                current_input_state = .RIGHT
+                current_input_state = .D
             case .A:
-                current_input_state = .LEFT
+                current_input_state = .A
             case .S:
-                current_input_state = .DOWN
+                current_input_state = .S
             case .W:
-                current_input_state = .UP
+                current_input_state = .W
+            case .SPACE:
+                current_input_state = .SPACE
         }
     } else if event.type == .KEYUP {
         #partial switch event.key.keysym.scancode {
             case .D:
-                if current_input_state == .RIGHT do current_input_state = .NONE
+                if current_input_state == .D do current_input_state = .NONE
             case .A:
-                if current_input_state == .LEFT do current_input_state = .NONE
+                if current_input_state == .A do current_input_state = .NONE
             case .S:
-                if current_input_state == .DOWN do current_input_state = .NONE
+                if current_input_state == .S do current_input_state = .NONE
             case .W:
-                if current_input_state == .UP do current_input_state = .NONE
+                if current_input_state == .W do current_input_state = .NONE
+            case .SPACE:
+                if current_input_state == .SPACE do current_input_state = .NONE
         }
     }
 }

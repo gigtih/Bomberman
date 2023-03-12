@@ -46,11 +46,10 @@ init_sdl :: proc() -> (ok: bool) {
     ctx.textures["wall"]   = load_texture("assets/textures/Wall.png")
     ctx.textures["player"] = load_texture("assets/textures/Player.png")
     ctx.textures["brick"]  = load_texture("assets/textures/Brick.png")
-    
-    // TODO: add bomb textures (animations)
 
-    // temporary bomb texture
-    ctx.textures["bomb"] = load_texture("assets/textures/Bomb.png")
+    ctx.textures["explosion"]  = load_texture("assets/textures/Explosion.png")
+    ctx.textures["bomb_anim1"] = load_texture("assets/textures/Bomb_animations/sprite_bomb0.png")
+    ctx.textures["bomb_anim2"] = load_texture("assets/textures/Bomb_animations/sprite_bomb1.png")
 
     return true
 }
@@ -90,6 +89,10 @@ main :: proc() {
 
     ctx.quit = !init_sdl()
 
+    now: u64  = sdl2.GetPerformanceCounter()
+    last: u64 = 0
+    dt: f64
+
     defer sdl2.Quit()
     defer sdl2.DestroyWindow(ctx.window)
     defer sdl2.DestroyRenderer(ctx.renderer)
@@ -102,8 +105,20 @@ main :: proc() {
     player->construct()
 
     for !ctx.quit {
+        last = now
+        now = sdl2.GetPerformanceCounter()
+
+        dt = f64((now - last)) / f64(sdl2.GetPerformanceFrequency())
+
+        if dt > 1 do dt = 0
+        if bomb.counter < 0 do bomb.counter = 0
+
         process_input()
         update()
         draw()
+
+        bomb->explode_bomb()
+
+        bomb.counter -= dt
     }
 }
