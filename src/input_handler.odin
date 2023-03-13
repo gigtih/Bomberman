@@ -2,7 +2,7 @@ package main
 
 import "vendor:sdl2"
 
-InputState :: enum i8 {
+InputState :: enum u8 {
     NONE,
     W,
     S,

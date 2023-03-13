@@ -48,8 +48,8 @@ init_sdl :: proc() -> (ok: bool) {
     ctx.textures["brick"]  = load_texture("assets/textures/Brick.png")
 
     ctx.textures["explosion"]  = load_texture("assets/textures/Explosion.png")
-    ctx.textures["bomb_anim1"] = load_texture("assets/textures/Bomb_animations/sprite_bomb0.png")
-    ctx.textures["bomb_anim2"] = load_texture("assets/textures/Bomb_animations/sprite_bomb1.png")
+    ctx.textures["bomb_anim0"] = load_texture("assets/textures/Bomb_animations/sprite_bomb0.png")
+    ctx.textures["bomb_anim1"] = load_texture("assets/textures/Bomb_animations/sprite_bomb1.png")
 
     return true
 }
@@ -59,6 +59,8 @@ draw :: proc() {
 
     render_map()
     draw_player()
+
+    bomb->render()
 
     sdl2.RenderPresent(ctx.renderer)
 }
@@ -116,8 +118,6 @@ main :: proc() {
         process_input()
         update()
         draw()
-
-        bomb->explode_bomb()
 
         bomb.counter -= dt
     }

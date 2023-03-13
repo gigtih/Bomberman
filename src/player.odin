@@ -95,7 +95,8 @@ process_player_input :: proc() {
         case .W:
             player->move_up()
         case .SPACE:
-            bomb->initialize_bomb()
+            bomb->initialize()
+            bomb.place = true
     }
 }
 

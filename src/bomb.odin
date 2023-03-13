@@ -5,12 +5,13 @@ import "core:fmt"
 
 Bomb :: struct {
     time_to_explode: f64,
-    initialize_bomb: proc(bomb: ^Bomb),
-    explode_bomb:    proc(bomb: ^Bomb),
-    render_bomb:     proc(bomb: ^Bomb),
+    initialize:      proc(bomb: ^Bomb),
+    // explode:         proc(bomb: ^Bomb),
+    render:          proc(bomb: ^Bomb),
 
     pos:             [2]i32,
     tile_pos:        [2]i32,
+    place:           bool,
 
     can_explode:     bool,
     counter:         f64,
@@ -23,18 +24,19 @@ bomb := Bomb{
     pos = { 0, 0 },
     tile_pos = { 0, 0 },
 
-    initialize_bomb = proc(bomb: ^Bomb) {
+    initialize = proc(bomb: ^Bomb) {
         bomb.counter = bomb.time_to_explode
         bomb.can_explode = true
     },
-    explode_bomb = proc(bomb: ^Bomb) {
-        if bomb.counter == 0 && bomb.can_explode {
-            fmt.println("bomb exploded")
+    // explode = proc(bomb: ^Bomb) {
+    //     if bomb.counter == 0 && bomb.can_explode {
+    //         fmt.println("bomb exploded")
 
-            bomb.can_explode = false
-        }
-    },
-    render_bomb = proc(bomb: ^Bomb) {
-        
+    //         bomb.can_explode = false
+    //     }
+    // },
+    render = proc(bomb: ^Bomb) {
+        bomb.pos = player.pos
+        bomb.tile_pos = convert_from_tile(player.pos)
     },
 }
