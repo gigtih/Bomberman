@@ -5,38 +5,46 @@ import "core:fmt"
 
 Bomb :: struct {
     time_to_explode: f64,
-    initialize:      proc(bomb: ^Bomb),
-    // explode:         proc(bomb: ^Bomb),
+    place:      proc(bomb: ^Bomb),
+    explode:         proc(bomb: ^Bomb),
     render:          proc(bomb: ^Bomb),
 
     pos:             [2]i32,
     tile_pos:        [2]i32,
-    place:           bool,
+    placed:          bool,
 
-    can_explode:     bool,
     counter:         f64,
+}
+
+convert_to_tile :: proc(pos: [2]i32) -> [2]i32 {
+    return pos / TILE_SIZE
 }
 
 bomb := Bomb{
     time_to_explode = 1.0,
-    can_explode = false,
+    placed = false,
 
     pos = { 0, 0 },
     tile_pos = { 0, 0 },
 
-    initialize = proc(bomb: ^Bomb) {
-        bomb.counter = bomb.time_to_explode
-        bomb.can_explode = true
-    },
-    // explode = proc(bomb: ^Bomb) {
-    //     if bomb.counter == 0 && bomb.can_explode {
-    //         fmt.println("bomb exploded")
+    place = proc(using bomb: ^Bomb) {
+        if placed do return 
 
-    //         bomb.can_explode = false
-    //     }
-    // },
-    render = proc(bomb: ^Bomb) {
-        bomb.pos = player.pos
-        bomb.tile_pos = convert_from_tile(player.pos)
+        counter = time_to_explode
+
+        pos = convert_to_pos(player.tile_pos)
+        tile_pos = convert_to_tile(pos)
+    },
+    explode = proc(using bomb: ^Bomb) {
+        if counter == 0 && placed {
+            fmt.println("bomb exploded")
+
+            placed = false
+        }
+    },
+    render = proc(using bomb: ^Bomb) {
+        if placed {
+            sdl2.RenderCopy(ctx.renderer, ctx.textures["bomb_anim0"], nil, &sdl2.Rect{pos.x, pos.y, TILE_SIZE, TILE_SIZE})
+        }
     },
 }

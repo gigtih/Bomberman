@@ -1,32 +1,22 @@
 @echo off
 
-setlocal enabledelayedexpansion
-
 call cls
 
+echo ===========BUILDING===========
+echo.
 
-if "%1" == "debug" (
-    echo ===========BUILDING DEBUG===========
+call odin build src\ -out:bin\Bomberman.exe -o:speed
+
+if %ERRORLEVEL% EQU 0 (
     echo.
 
-    call odin build src\ -out:bin\Bomberman.exe -debug
+    echo ===========RUNNING===========
+    echo.
+
+    call .\bin\Bomberman.exe
+
+    echo.
 ) else (
-    echo ===========BUILDING===========
     echo.
-
-    call odin build src\ -out:bin\Bomberman.exe -o:speed
-
-    if %ERRORLEVEL% EQU 0 (
-        echo.
-
-        echo ===========RUNNING===========
-        echo.
-
-        call .\bin\Bomberman.exe
-
-        echo.
-    ) else (
-        echo.
-        echo ===========BUILD FAILED===========
-    )
+    echo ===========BUILD FAILED===========
 )

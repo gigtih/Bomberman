@@ -54,11 +54,11 @@ init_sdl :: proc() -> (ok: bool) {
     return true
 }
 
-draw :: proc() {
+render :: proc() {
     sdl2.RenderClear(ctx.renderer)
 
     render_map()
-    draw_player()
+    render_player()
 
     bomb->render()
 
@@ -117,7 +117,9 @@ main :: proc() {
 
         process_input()
         update()
-        draw()
+        render()
+
+        bomb->explode()
 
         bomb.counter -= dt
     }

@@ -76,11 +76,11 @@ player := Player{
     },
 }
 
-draw_player :: proc() {
+render_player :: proc() {
     sdl2.RenderCopy(ctx.renderer, ctx.textures["player"], nil, &sdl2.Rect{player.pos.x, player.pos.y, TILE_SIZE, TILE_SIZE})
 }
 
-convert_from_tile :: proc(tile_pos: [2]i32) -> [2]i32 {
+convert_to_pos :: proc(tile_pos: [2]i32) -> [2]i32 {
     return TILE_SIZE * tile_pos
 }
 
@@ -95,8 +95,8 @@ process_player_input :: proc() {
         case .W:
             player->move_up()
         case .SPACE:
-            bomb->initialize()
-            bomb.place = true
+            bomb->place()
+            bomb.placed = true
     }
 }
 
@@ -120,7 +120,7 @@ cancel_moving :: proc(player: ^Player) {
 }
 
 update_player :: proc() {
-    if player.pos == convert_from_tile(player.target_pos) {
+    if player.pos == convert_to_pos(player.target_pos) {
         stop_moving(&player)
     }
 
