@@ -5,7 +5,7 @@ import "core:fmt"
 
 Bomb :: struct {
     time_to_explode: f64,
-    place:      proc(bomb: ^Bomb),
+    place:           proc(bomb: ^Bomb),
     explode:         proc(bomb: ^Bomb),
     render:          proc(bomb: ^Bomb),
 
